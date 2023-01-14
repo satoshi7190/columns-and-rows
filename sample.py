@@ -22,9 +22,8 @@ from qgis.core import *
 from qgis.gui import *
 
 from .sample_menu_01 import SampleMenu01
-from .sample_menu_02 import SampleMenu02
 
-PLUGIN_NAME = 'sample'
+PLUGIN_NAME = 'CSV Matrix'
 
 
 class Sample:
@@ -68,14 +67,10 @@ class Sample:
     def initGui(self):
         # メニュー設定
         self.add_action(
-            icon_path=None,
-            text="Menu01",
+            icon_path=os.path.join(os.path.dirname(
+                __file__), "imgs/file_icon_text_csv.png"),
+            text="CSVの行列入れ替え",
             callback=self.show_menu_01,
-            parent=self.win)
-        self.add_action(
-            icon_path=None,
-            text="Menu02",
-            callback=self.show_menu_02,
             parent=self.win)
 
     def unload(self):
@@ -88,6 +83,4 @@ class Sample:
         self.sample_menu_01 = SampleMenu01()
         self.sample_menu_01.show()
 
-    def show_menu_02(self):
-        self.sample_menu_02 = SampleMenu02()
-        self.sample_menu_02.show()
+

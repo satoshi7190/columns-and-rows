@@ -1,15 +1,15 @@
 [general]
-name=Sample
+name=CSV Matrix
 qgisMinimumVersion=3.0
-about=QGIS Sample Plugin
-description=QGIS Sample Plugin
+about=自作プラグイン
+description=CSVファイルの行列を入れ替える
 version=1.0
 
 #Plugin main icon
-icon=imgs/icon.png
+icon=imgs/file_icon_text_csv.png
 
-author=MIERUNE Inc.
-email=info@mierune.co.jp
+author=Satohi Komatsu
+email=
 homepage=
 tracker=
 repository=
