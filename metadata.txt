@@ -1,7 +1,7 @@
 [general]
-name=Replacing matrices
+name=Change rows and columns
 qgisMinimumVersion=3.0
-about=自作プラグイン
+about=Change rows and columns
 description=行列を入れ替える
 version=1.0
 
