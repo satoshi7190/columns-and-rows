@@ -23,7 +23,7 @@ from qgis.gui import *
 
 from .sample_menu_01 import SampleMenu01
 
-PLUGIN_NAME = 'CSV Matrix'
+PLUGIN_NAME = "CSV Change Matrix"
 
 
 class Sample:
@@ -37,16 +37,17 @@ class Sample:
         self.toolbar.setObjectName(PLUGIN_NAME)
 
     def add_action(
-            self,
-            icon_path,
-            text,
-            callback,
-            enabled_flag=True,
-            add_to_menu=True,
-            add_to_toolbar=True,
-            status_tip=None,
-            whats_this=None,
-            parent=None):
+        self,
+        icon_path,
+        text,
+        callback,
+        enabled_flag=True,
+        add_to_menu=True,
+        add_to_toolbar=True,
+        status_tip=None,
+        whats_this=None,
+        parent=None,
+    ):
         icon = QIcon(icon_path)
         action = QAction(icon, text, parent)
         action.triggered.connect(callback)
@@ -58,20 +59,20 @@ class Sample:
         if add_to_toolbar:
             self.toolbar.addAction(action)
         if add_to_menu:
-            self.iface.addPluginToMenu(
-                self.menu,
-                action)
+            self.iface.addPluginToMenu(self.menu, action)
         self.actions.append(action)
         return action
 
     def initGui(self):
         # メニュー設定
         self.add_action(
-            icon_path=os.path.join(os.path.dirname(
-                __file__), "imgs/file_icon_text_csv.png"),
+            icon_path=os.path.join(
+                os.path.dirname(__file__), "imgs/file_icon_text_csv.png"
+            ),
             text="CSVの行列入れ替え",
             callback=self.show_menu_01,
-            parent=self.win)
+            parent=self.win,
+        )
 
     def unload(self):
         for action in self.actions:
@@ -82,5 +83,3 @@ class Sample:
     def show_menu_01(self):
         self.sample_menu_01 = SampleMenu01()
         self.sample_menu_01.show()
-
-

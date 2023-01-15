@@ -15,4 +15,5 @@
 
 def classFactory(iface):
     from .sample import Sample
+
     return Sample(iface)

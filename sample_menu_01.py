@@ -27,80 +27,75 @@ from qgis.gui import *
 class SampleMenu01(QDialog):
     def __init__(self):
         super().__init__()
-        self.ui = uic.loadUi(os.path.join(os.path.dirname(
-            __file__), 'sample_menu_01.ui'), self)
-        
-      
-        
+        self.ui = uic.loadUi(
+            os.path.join(os.path.dirname(__file__), "sample_menu_01.ui"), self
+        )
+
         # 選択をcsvレイヤーのみに制限
-        self.ui.mMapLayerComboBox.setFilters(QgsMapLayerProxyModel.NoGeometry)
-        
+        self.ui.mMapLayerComboBox.setFilters(QgsMapLayerProxyModel.VectorLayer)
+
         # すでに選択されているcsvレイヤーを取得
         Startlayer = self.ui.mMapLayerComboBox.currentLayer()
-        
+
         # tableにセット
         self.ui.mFieldComboBox.setLayer(Startlayer)
-        
+
         # レイヤーが選択されるたびにtableをセット
-        self.ui.mMapLayerComboBox.layerChanged['QgsMapLayer*'].connect(self.ui.mFieldComboBox.setLayer)
+        self.ui.mMapLayerComboBox.layerChanged["QgsMapLayer*"].connect(
+            self.ui.mFieldComboBox.setLayer
+        )
 
         self.ui.pushButton_run.clicked.connect(self.get_and_show_input_text)
         self.ui.pushButton_cancel.clicked.connect(self.close)
-        
-        # checkBox1 = QCheckBox("First", self.ui.listView)
-        # checkBox2 = QCheckBox("Second", self.ui.listView)
-        # checkBox3 = QCheckBox("Third", self.ui.listView)
-
-        # # チェックボックスの配置
-        # checkBox1.move(10, 0)
-        # checkBox2.move(10, 50)
-        # checkBox3.move(10, 90)
-        
-        
 
     def get_and_show_input_text(self):
-        # テキストボックス値取得
-        # text_value = self.ui.lineEdit.text()
 
-        
         # 選択されたレイヤーを取得
         layer = self.ui.mMapLayerComboBox.currentLayer()
 
-        #項目名にする列
+        # 項目名にする列
         field_name = self.ui.mFieldComboBox.currentField()
-        
+
+        # データタイプの取得
         value_type = self.ui.comboBox.currentText()
+
+        # 空白削除オプション
+        space_removal = self.ui.checkBox.checkState() == QtCore.Qt.Checked
         
-            
-        test_layer = QgsVectorLayer(
-        "None",
-            layer.name() + "CHANGE_MATRIX",
+
+        output_layer = QgsVectorLayer(
+            "None",
+            layer.name() + "_CHANGE_MATRIX",
             "memory",
         )
-        provider = test_layer.dataProvider()
+        provider = output_layer.dataProvider()
+        
+        front_row_name = str(field_name)
 
-        provider.addAttributes([QgsField('NAME', QVariant.String),])
+        provider.addAttributes([QgsField(front_row_name, QVariant.String)])
 
         for feature in layer.getFeatures():
-            
-            if value_type == "string（文字）"
 
-                provider.addAttributes(
-                [QgsField(feature[field_name], QVariant.String),]
-                )
-                
-            if value_type == "string（文字）"
+            new_field_name = str(feature[field_name])
 
-                provider.addAttributes(
-                [
-                QgsField(feature[field_name], QVariant.String),
-                ]
-                )
+            if value_type == "string（文字）":
+                provider.addAttributes([QgsField(new_field_name, QVariant.String)])
 
+            if value_type == "integer（少数を含まない数字）":
+                provider.addAttributes([QgsField(new_field_name, QVariant.Int)])
+
+            if value_type == "real（少数を含む数字）":
+                provider.addAttributes([QgsField(new_field_name, QVariant.Double)])
 
         for field in layer.fields():
-            fix = field.name().replace(' ', '').replace('　', '')
+            fix = field.name()
             
+            if fix == field_name:
+                continue
+
+            if space_removal:
+                fix.replace(" ", "").replace("　", "")
+
             list = [fix]
 
             for feature in layer.getFeatures():
@@ -111,24 +106,21 @@ class SampleMenu01(QDialog):
             new_feature.setAttributes(list)
             provider.addFeature(new_feature)
 
-
-
-
-
-        # feature = QgsFeature()
-        # feature.setAttributes(['2',0])
-        # provider.addFeature(feature)
-
-        test_layer.updateFields()
-        test_layer.updateExtents()
-        QgsProject.instance().addMapLayer(test_layer)
+        output_layer.updateFields()
+        output_layer.updateExtents()
+        #QgsProject.instance().addMapLayer(output_layer)
         
-        #メッセージ表示
-        QMessageBox.information(None, 'メッセージ', 'tableの行列を入れ替えました。')
-
-        """
-        QgsField("name", QVariant.String),
-        QgsField("age",  QVariant.Int),
         
+        for feature in output_layer.getFeatures():
+            exp = QgsExpression(f"to_int( {feature[2]} )")
+            print(exp.evaluate())
+            
+        
+        
+        # exp = QgsExpression("segments_to_lines( $geometry )")
+        # context = QgsExpressionContext()
+        # context.setFeature(self.mesh_feat)
+        # line_geom = exp.evaluate(context)
 
-        """
+        # メッセージ表示
+        #QMessageBox.information(None, "メッセージ", "CSVの行列を入れ替えました。")

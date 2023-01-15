@@ -1,8 +1,8 @@
 [general]
-name=CSV Matrix
+name=Replacing matrices
 qgisMinimumVersion=3.0
 about=自作プラグイン
-description=CSVファイルの行列を入れ替える
+description=行列を入れ替える
 version=1.0
 
 #Plugin main icon
