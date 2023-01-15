@@ -23,7 +23,7 @@ from qgis.gui import *
 
 from .sample_menu_01 import SampleMenu01
 
-PLUGIN_NAME = "Change rows and columns"
+PLUGIN_NAME = "Columns and Rows"
 
 
 class Sample:

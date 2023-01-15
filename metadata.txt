@@ -1,7 +1,7 @@
 [general]
-name=Change rows and columns
+name=Columns and Rows
 qgisMinimumVersion=3.0
-about=Change rows and columns
+about=Columns and Rows
 description=属性テーブルの行列を入れ替える
 version=1.0
 

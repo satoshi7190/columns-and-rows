@@ -75,7 +75,7 @@ class SampleMenu01(QDialog):
 
         output_layer = QgsVectorLayer(
             "None",
-            layer.name() + "_CHANGE_MATRIX",
+            layer.name() + "_COLUMNS_ROWS",
             "memory",
         )
         provider = output_layer.dataProvider()

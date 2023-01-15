@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>360</height>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>テーブルの行列を入れ替え</string>
+   <string>属性テーブルの行列を入れ替え</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -82,6 +82,13 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>先頭列以外の値のデータ型の設定</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>（string以外を選択した場合、データ型が不一致の値はNULLになります。）</string>
      </property>
     </widget>
    </item>
