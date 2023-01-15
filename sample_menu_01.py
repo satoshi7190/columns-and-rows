@@ -33,10 +33,10 @@ class SampleMenu01(QDialog):
             os.path.join(os.path.dirname(__file__), "sample_menu_01.ui"), self
         )
 
-        # 選択をcsvレイヤーのみに制限
+        # 選択をベクターレイヤーのみに制限
         self.ui.mMapLayerComboBox.setFilters(QgsMapLayerProxyModel.VectorLayer)
 
-        # すでに選択されているcsvレイヤーを取得
+        # すでに選択されているベクターレイヤーを取得
         Startlayer = self.ui.mMapLayerComboBox.currentLayer()
 
         # tableにセット

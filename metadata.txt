@@ -2,7 +2,7 @@
 name=Change rows and columns
 qgisMinimumVersion=3.0
 about=Change rows and columns
-description=行列を入れ替える
+description=属性テーブルの行列を入れ替える
 version=1.0
 
 #Plugin main icon
