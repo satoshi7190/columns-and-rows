@@ -66,9 +66,7 @@ class Sample:
     def initGui(self):
         # メニュー設定
         self.add_action(
-            icon_path=os.path.join(
-                os.path.dirname(__file__), "imgs/file_icon_text_csv.png"
-            ),
+            icon_path=os.path.join(os.path.dirname(__file__), "imgs/icon.svg"),
             text="CSVの行列入れ替え",
             callback=self.show_menu_01,
             parent=self.win,

@@ -22,6 +22,8 @@ from PyQt5.QtWidgets import *
 from qgis.core import *
 from qgis.gui import *
 
+import unicodedata
+
 
 # uiファイルの定義と同じクラスを継承する
 class SampleMenu01(QDialog):
@@ -59,9 +61,17 @@ class SampleMenu01(QDialog):
         # データタイプの取得
         value_type = self.ui.comboBox.currentText()
 
-        # 空白削除オプション
-        space_removal = self.ui.checkBox.checkState() == QtCore.Qt.Checked
-        
+        # 空白削除オプション 先頭列
+        space_removal_first = self.ui.checkBox.checkState() == QtCore.Qt.Checked
+
+        # Unicode正規化オプション 先頭列
+        unicode_first = self.ui.checkBox_2.checkState() == QtCore.Qt.Checked
+
+        # 空白削除オプション 先頭列以外
+        space_removal_other = self.ui.checkBox_3.checkState() == QtCore.Qt.Checked
+
+        # Unicode正規化オプション 先頭列以外
+        unicode_other = self.ui.checkBox_4.checkState() == QtCore.Qt.Checked
 
         output_layer = QgsVectorLayer(
             "None",
@@ -69,7 +79,7 @@ class SampleMenu01(QDialog):
             "memory",
         )
         provider = output_layer.dataProvider()
-        
+
         front_row_name = str(field_name)
 
         provider.addAttributes([QgsField(front_row_name, QVariant.String)])
@@ -89,18 +99,40 @@ class SampleMenu01(QDialog):
 
         for field in layer.fields():
             fix = field.name()
-            
+
             if fix == field_name:
                 continue
 
-            if space_removal:
-                fix.replace(" ", "").replace("　", "")
+            if space_removal_first:
+                fix = fix.replace(" ", "").replace("　", "")
+
+            if unicode_first:
+                fix = unicodedata.normalize("NFKC", fix)
 
             list = [fix]
 
             for feature in layer.getFeatures():
 
-                list.append(feature[field.name()])
+                value = feature[field.name()]
+
+                if space_removal_other:
+
+                    value = str(feature[field.name()]).replace(" ", "").replace("　", "")
+
+                if unicode_other:
+
+                    value = unicodedata.normalize("NFKC", value)
+
+                if value_type == "string（文字）":
+                    exp = value
+
+                if value_type == "integer（少数を含まない数字）":
+                    exp = QgsExpression(f"to_int( {value} )").evaluate()
+
+                if value_type == "real（少数を含む数字）":
+                    exp = QgsExpression(f"to_real( {value} )").evaluate()
+
+                list.append(exp)
 
             new_feature = QgsFeature()
             new_feature.setAttributes(list)
@@ -108,19 +140,14 @@ class SampleMenu01(QDialog):
 
         output_layer.updateFields()
         output_layer.updateExtents()
-        #QgsProject.instance().addMapLayer(output_layer)
-        
-        
-        for feature in output_layer.getFeatures():
-            exp = QgsExpression(f"to_int( {feature[2]} )")
-            print(exp.evaluate())
-            
-        
-        
+        QgsProject.instance().addMapLayer(output_layer)
+
+        # for feature in output_layer.getFeatures():
+
         # exp = QgsExpression("segments_to_lines( $geometry )")
         # context = QgsExpressionContext()
         # context.setFeature(self.mesh_feat)
         # line_geom = exp.evaluate(context)
 
         # メッセージ表示
-        #QMessageBox.information(None, "メッセージ", "CSVの行列を入れ替えました。")
+        QMessageBox.information(None, "メッセージ", "行列を入れ替えたジオメトリなしレイヤーを作成しました。")

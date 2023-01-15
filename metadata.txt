@@ -6,7 +6,7 @@ description=行列を入れ替える
 version=1.0
 
 #Plugin main icon
-icon=imgs/file_icon_text_csv.png
+icon=imgs/icon.svg
 
 author=Satohi Komatsu
 email=
