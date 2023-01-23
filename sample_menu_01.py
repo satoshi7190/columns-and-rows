@@ -89,7 +89,7 @@ class SampleMenu01(QDialog):
         front_row_name = str(field_name)
 
         # 横列作成
-        self.ui.tableWidget.setColumnCount(layer.featureCount())
+        self.ui.tableWidget.setColumnCount(layer.featureCount() + 1)
         self.ui.tableWidget.setRowCount(len(layer.attributeList()))
 
         Header_Labels_list = [front_row_name]
